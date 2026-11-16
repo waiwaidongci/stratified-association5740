@@ -30,4 +30,4 @@ def create(db,data,user):
 def compute(db,id):
  row=db.get(AssociationRun,id)
  if not row or row.status not in ['queued','running']:return
- row.status='running';db.commit();row.result=analyze(row.input_snapshot,row.alpha);row.status='completed';row.error='';record(db,None,'worker.completed',row.id);db.commit();return serialize(row)
+ row.status='running';db.commit();row.result=analyze(row.input_snapshot,row.alpha,row.run_type);row.status='completed';row.error='';record(db,None,'worker.completed',row.id);db.commit();return serialize(row)

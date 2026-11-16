@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from sqlalchemy import text
-from src.config.database import Base,engine
+from src.config.database import Base,engine,ensure_run_type_column
 from src.config.queue import queue
 from src import models
 from src.routes import auth,studies,strata,counts,runs,notes,audits
@@ -13,6 +13,7 @@ from src.middlewares.error_handler import ErrorHandler
 @asynccontextmanager
 async def lifespan(app):
     Base.metadata.create_all(engine)
+    ensure_run_type_column()
     if os.getenv('SEED_DEMO','true').lower()=='true':
         try:
             from scripts.seed_demo import seed

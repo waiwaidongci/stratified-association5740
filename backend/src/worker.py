@@ -1,10 +1,11 @@
 import time,logging
 from pathlib import Path
-from src.config.database import SessionLocal
+from src.config.database import SessionLocal,ensure_run_type_column
 from src.config.queue import queue
 from src.models import AssociationRun
 from src.services.run_service import compute,QUEUE
 logging.basicConfig(level=logging.INFO)
+ensure_run_type_column()
 while True:
     Path('/tmp/heartbeat').touch()
     try:

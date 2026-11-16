@@ -8,6 +8,7 @@ class AssociationRun(Base):
  name:Mapped[str]=mapped_column(String(160),unique=True)
  study_id:Mapped[int]=mapped_column(ForeignKey('association_studies.id'))
  alpha:Mapped[float]=mapped_column(Double(asdecimal=False),default=.05)
+ run_type:Mapped[str]=mapped_column(String(32),default='layerwise_exact')
  status:Mapped[str]=mapped_column(String(20),default='queued')
  input_snapshot:Mapped[dict]=mapped_column(JSON,default=dict)
  result:Mapped[dict]=mapped_column(JSON,default=dict)

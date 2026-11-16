@@ -1,2 +1,5 @@
 # Initial schema
 SQLAlchemy metadata.create_all initializes the five business tables plus users and audit on first start. Unique keys: study.code, (stratum.study_id,stratum.code), count.stratum_id, run.name, note.title. Foreign keys form study→stratum→count and study→run→note. This is not a production schema migration mechanism; use a versioned migration tool before evolving persisted deployments.
+
+## run_type column (interval scan research)
+`association_runs.run_type VARCHAR(32) NOT NULL DEFAULT 'layerwise_exact'` distinguishes the original full-stratum mean-distance exact test (`layerwise_exact`) from the frozen-order contiguous interval scan (`interval_scan`). Fresh databases get the column from create_all; existing databases are upgraded idempotently by `ensure_run_type_column()` in the FastAPI lifespan (information_schema check followed by ALTER TABLE). Historical runs keep the layerwise default and are never backfilled with scan results; their stored exact-test values remain the source of truth.
